@@ -223,15 +223,6 @@ def V4(n):
         sum += i
     return sum
 
-# primes = []
-# file = open("Primes.txt", "r")
-# f1 = file.readlines()
-# for x in f1:
-#     l = x.split()
-#     for p in l:
-#         primes += [int(p)]
-# print(primes)
-
 def V5(n):
     if(n<2):
         return 1
@@ -273,20 +264,19 @@ def V5(n):
     return sum
 
 def V6(n):
+    n=int(n)
     if(n<2):
         return 1
     factors = {}
     nextBinomial = 1
-    for i in range(n):
-        nextBinomial = nextBinomial*(n-i)/(i+1)
-        # l = findFactors(nextBinomial)
-        # for possibleFactor in l:
-        #     if(not possibleFactor in factors):
-        #         factors[possibleFactor]=0
-        #     factors[possibleFactor]+=1
+    for i in range(n-1):
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i) // (i+1)
+        # print(nextBinomial)
         temp = nextBinomial
         if temp%2==0:
-            factors[2]=0
+            if(2 not in factors):
+                factors[2]=0
             while(temp%2==0):
                 factors[2]+=1
                 temp=temp//2
@@ -300,8 +290,8 @@ def V6(n):
                 temp=temp//current
                 current-=2
             current+=2
-    print("found all factors")
-    print(factors)
+    # print("found all factors")
+    # print(factors)
     sum = 1
     keys = list(factors.keys())
     for key in keys:
@@ -311,49 +301,471 @@ def V6(n):
         sum*=tmpSum
     return sum
 
+def V7(n):
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    nextBinomial = 1
+    i = 1
+    start = time.time()
+    while i <= int((n-1)/2):
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        if temp%2==0:
+            if(2 not in factors):
+                factors[2]=0
+            while(temp%2==0):
+                factors[2]+=1
+                temp=temp//2
+        current = 3
+        # print("past 2")
+        while temp>1:
+            if temp%current==0:
+                if not current in factors:
+                    factors[current]=0
+                factors[current]+=1
+                temp=temp//current
+                current-=2
+            current+=2
+        i+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        if temp%2==0:
+            if(2 not in factors):
+                factors[2]=0
+            while(temp%2==0):
+                factors[2]+=1
+                temp=temp//2
+        current = 3
+        # print("past 2")
+        while temp>1:
+            if temp%current==0:
+                if not current in factors:
+                    factors[current]=0
+                factors[current]+=1
+                temp=temp//current
+                current-=2
+            current+=2
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = 1
+        for exp in range(1,factors[key]+1):
+            tmpSum += key**exp
+            tmpSum=tmpSum%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    # end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+primes = [2,3]
+
+def PrimesTo20000():
+    global primes
+    while (primes[len(primes)-1]<20000):
+        addPrime()
+
+def addPrime():
+    global primes
+    l = len(primes)
+    current = primes[len(primes)-1]+2
+    while l == len(primes):
+        prime = True
+        i = 0
+        while (i < l and prime):
+            p=primes[i]
+            if current%p==0:
+                prime=False
+            i+=1
+        if(prime):
+            primes += [current]
+        else:
+            current+=2
+
+#currently 8 is fastest
+def V8(n):
+    global primes
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    nextBinomial = 1
+    i = 1
+    start = time.time()
+    while i <= int((n-1)/2):
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        l = 0
+        while(temp > 1):
+            if temp%primes[l]==0:
+                if not primes[l] in factors:
+                    factors[primes[l]] = 0
+                factors[primes[l]]+=1
+                temp=temp//primes[l]
+                l-=1
+            l+=1
+            if(l==len(primes) and temp > 1):
+                addPrime()
+                # print(primes)
+        i+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        l = 0
+        while(temp > 1):
+            if temp%primes[l]==0:
+                if not primes[l] in factors:
+                    factors[primes[l]] = 0
+                factors[primes[l]]+=1
+                temp=temp//primes[l]
+                l-=1
+            l+=1
+            if(l==len(primes) and temp > 1):
+                addPrime()
+                # print(primes)
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        # for exp in range(1,factors[key]+1):
+        #     tmpSum += key**exp
+        #     tmpSum=tmpSum%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+def E(n,k,p):
+    r=0
+    e=0
+    r=0
+    if(k>n/2):
+        k=n-k
+    if(p>n-k):
+        return (1)
+    if(p>n/2):
+        return (0)
+    f=math.sqrt(n)
+    if(p>f):
+        if(n%p < k%p):
+            return(1)
+        else:
+            return(0)
+    while(n>0):
+        a=n%p
+        n=n//p
+        b=k%p+r
+        k=k//p
+        if(a<b):
+            e=e+1
+            r=1
+        else:
+            r=0
+    return(e)
+
+def V9(n):
+    global primes
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    start = time.time()
+    # find the factors
+    for r in range(1,n):
+        index = 0
+        while(primes[index]<=n):
+            t = E(n,r,primes[index])
+            if t>0:
+                if primes[index] not in factors:
+                    factors[primes[index]]=0
+                factors[primes[index]]+=t
+                # print(t)
+            index+=1
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+def Legende(n,r,p):
+    exp = 1
+    count = 0
+    # str(n-int(n)).split('.')[1]
+    while((str(n/(p**exp)-n//(p**exp)).split('.')[1])<(str(r/(p**exp)-r//(p**exp)).split('.')[1])):
+        count+=n//(p**exp)
+        exp+=1
+    return count
+
+def V10(n):
+    global primes
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    start = time.time()
+    # find the factors
+    for r in range(1,int(n/2+1)):
+        index = 0
+        while(primes[index]<=n):
+            # t1 = Legende(n,primes[index])
+            # t2 = Legende(r,primes[index])
+            # t3 = Legende(n-r,primes[index])
+            # tSum = t1-t2-t3
+            tSum=Legende(n,r,primes[index])
+            if(tSum>0):
+                if(primes[index] not in factors):
+                    factors[primes[index]]=0
+                factors[primes[index]]+=tSum
+            index+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        index = 0
+        r = int(n/2+1)
+        while(primes[index]<=n):
+            # t1 = Legende(n,primes[index])
+            # t2 = Legende(r,primes[index])
+            # t3 = Legende(n-r,primes[index])
+            # tSum = t1-t2-t3
+            tSum=Legende(n,r,primes[index])
+            if(tSum>0):
+                if(primes[index] not in factors):
+                    factors[primes[index]]=0
+                factors[primes[index]]+=tSum
+            index+=1
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+"""
+Using Lucas' and Fermat's little theorem to calculate nCk mod m, m is prime
+"""
+# modular exponentiation: b^e % mod
+def mod_exp(b,e,mod):
+    r = 1
+    while e > 0:
+        if (e&1) == 1:
+            r = (r*b)%mod
+        b = (b*b)%mod
+        e >>= 1
+
+    return r
+
+# get degree of p in n! (exponent of p in the factorization of n!)
+def fact_exp(n,p):
+    e = 0
+    u = p
+    t = n
+    while u <= t:
+        e += t//u
+        u *= p
+    return e
+
+# convert given number n into array of its base b representation
+# most significant digit is at rightmost position in array
+def get_base_digits(n,b):
+    d = []
+    while n > 0:
+        d.append(n % b)
+        n  = n // b
+    return d
+
+# Using Fermat's little theorem to compute nCk mod p
+# considering cancelation of p in numerator and denominator
+# Note: p must be prime
+def fermat_binom_advanced(n,k,p):
+    # check if degrees work out
+    num_degree = fact_exp(n,p) - fact_exp(n-k,p)
+    den_degree = fact_exp(k,p)
+    if num_degree > den_degree:
+        return 0
+
+    if k > n:
+        return 0
+    cur = 1
+    # calculate numerator and cancel out occurrences of p
+    num = 1
+    for i in range(n,n-k,-1):
+        cur = i
+        while cur%p == 0:
+            cur //= p
+        num = (num*cur)%p
+    cur=1
+    # calculate denominator and cancel out occurrences of p
+    denom = 1
+    for i in range(1,k+1):
+        cur = i
+        while cur%p == 0:
+            cur //= p
+    denom = (denom*cur)%p
+
+    # numerator * denominator^(p-2) (mod p)
+    return (num * mod_exp(denom,p-2,p))%p
+# Using Lucas' theorem to split the problem into smaller sub-problems
+# In this version assuming p is prime
+def lucas_binom(n,k,p):
+    # get n and k in base p representation
+    np = get_base_digits(n,p)
+    kp = get_base_digits(k,p)
+
+    # calculate (nCk) = (n0 choose k0)*(n1 choose k1) ... (ni choose ki) (mod p)
+    binom = 1
+    for i in range(len(np)-1,-1,-1):
+        ni = np[i]
+        ki = 0
+        if i < len(kp):
+            ki = kp[i]
+        binom = (binom * fermat_binom_advanced(ni,ki,p)) % p
+        if(binom==0):
+            return 0
+    return binom
+
+def add_2_bases(n,r,p):
+    n1 = get_base_digits(r,p)
+    n2 = get_base_digits(n-r,p)
+    count= 0
+    i1 = len(n1)
+    i2 = len(n2)
+    carry = 0
+    while i1>0 and i2>0:
+        i1-=1
+        i2-=1
+        tmp = n1[i1]+n2[i2]+carry
+        carry = tmp%p
+        if(carry>0):
+            return carry
+
+def V11(n):
+    global primes
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    start = time.time()
+    # find the factors
+    for r in range(1,int(n/2+1)):
+        index = 0
+        while(primes[index]<=n):
+            tSum=lucas_binom(n,r,primes[index])
+            if(tSum==0):
+                print("One factor is : " + str(primes[index]))
+                if(primes[index] not in factors):
+                    factors[primes[index]]=0
+                # print("# of factors"+  str(fact_exp(n,primes[index])))
+                # factors[primes[index]]+=Legende(n,r,primes[index])
+            index+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        index = 0
+        r = int(n/2+1)
+        while(primes[index]<=n):
+            # t1 = Legende(n,primes[index])
+            # t2 = Legende(r,primes[index])
+            # t3 = Legende(n-r,primes[index])
+            # tSum = t1-t2-t3
+            tSum=lucas_binom(n,r,primes[index])
+            if(tSum==0):
+                if(primes[index] not in factors):
+                    factors[primes[index]]=0
+                factors[primes[index]]+=fact_exp(n,primes[index])
+            index+=1
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
 def main():
+    PrimesTo20000()
     x = input("How high?")
-    print(comb(55,26))
-    # 3085851035479212.0
-    # 3085851035479212.0
-    # input("Continue?")
+    # print(int(V7(x)))
+    # V6: 0.2798879146575928
+    # V7: 32.21831011772156
+    # V7(improved): 29.772693395614624
+    input("Continue?")
     start = time.time()
     sum = 0
     for i in range(1,1+int(x)):
-        # print(i)
-        t = int(V5(i))
+        print(i)
+        t = int(V11(i))%1000000007
         sum+=t
-        print(t)
+        sum=sum%1000000007
+        # print(t)
     print()
-    # sum=sum%1000000007
     print(sum)
     end = time.time()
     print("This operation took " + str(end-start) + " seconds")
-    # start = time.time()
-    # sum = 0
-    # for i in range(1,1+int(x)):
-    #     t=int(VThree(i))
-    #     sum+=t
-    #     print(t)
-    #     sum=sum%1000000007
-    # print()
-    # print("Sum is: " + str(sum))
-    # end = time.time()
-    # print("Time operation took:")
-    # print(end-start)
-    # print()
-    # start = time.time()
-    # sum=0
-    # for i in range(1,1+int(x)):
-    #     t=int(tmp(i))
-    #     sum+=t
-    #     print(t)
-    #     sum=sum%1000000007
-    # print()
-    # print("Sum is: " + str(sum))
-    # end = time.time()
-    # print("Time operation took:")
-    # print(end-start)
     # print(S(int(x)))
     # print(S(20000))
 
