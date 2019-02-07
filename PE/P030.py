@@ -1,13 +1,28 @@
-# The fraction 49/98 is a curious fraction, as an inexperienced mathematician in attempting to simplify it may incorrectly believe that 49/98 = 4/8, which is correct, is obtained by cancelling the 9s.
+# Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:
 #
-# We shall consider fractions like, 30/50 = 3/5, to be trivial examples.
+# 1634 = 14 + 64 + 34 + 44
+# 8208 = 84 + 24 + 04 + 84
+# 9474 = 94 + 44 + 74 + 44
+# As 1 = 14 is not a sum it is not included.
 #
-# There are exactly four non-trivial examples of this type of fraction, less than one in value, and containing two digits in the numerator and denominator.
+# The sum of these numbers is 1634 + 8208 + 9474 = 19316.
 #
-# If the product of these four fractions is given in its lowest common terms, find the value of the denominator.
+# Find the sum of all the numbers that can be written as the sum of fifth powers of their digits.
+
+power = 5
 
 def main():
-    print()
+    sum = 0
+    for i in range(2,1000000):
+        possibleSolution = i
+        tempSum=0
+        while possibleSolution>0:
+            tempSum+= (possibleSolution%10)**power
+            possibleSolution=possibleSolution//10
+        if tempSum == i:
+            sum+=tempSum
+            print(i)
+    print(sum)
 
 if __name__ == '__main__':
     main()
