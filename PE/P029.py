@@ -1,7 +1,7 @@
 
 def main():
     max = 100
-    originals = [];
+    originals = []
     a  = 2
     while a < max+1:
         b = 2
