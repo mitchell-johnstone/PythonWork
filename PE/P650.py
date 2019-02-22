@@ -659,6 +659,7 @@ def fermat_binom_advanced(n,k,p):
 
     # numerator * denominator^(p-2) (mod p)
     return (num * mod_exp(denom,p-2,p))%p
+
 # Using Lucas' theorem to split the problem into smaller sub-problems
 # In this version assuming p is prime
 def lucas_binom(n,k,p):
@@ -701,22 +702,33 @@ def V11(n):
     factors = {}
     start = time.time()
     # find the factors
-    for r in range(1,int(n/2+1)):
+    t = int(n/2+1)
+    if n%2 == 0:
+        t = int(n/2)
+    # int nextBinomial = 0
+    for r in range(1,t):
         index = 0
+        # nextBinomial = nextBinomial * (n-r+1) // (r)
         while(primes[index]<=n):
             tSum=lucas_binom(n,r,primes[index])
             if(tSum==0):
-                print("One factor is : " + str(primes[index]))
+                # print("One factor is : " + str(primes[index]))
                 if(primes[index] not in factors):
                     factors[primes[index]]=0
+                t1 = fact_exp(n,primes[index])
+                t2 = fact_exp(r,primes[index])
+                t3 = fact_exp(n-r,primes[index])
+                factors[primes[index]] += (t1-t2-t3)
+                # factors[primes[index]]+=1#fact_exp(prime[index])
                 # print("# of factors"+  str(fact_exp(n,primes[index])))
                 # factors[primes[index]]+=Legende(n,r,primes[index])
             index+=1
     for key in factors:
         factors[key]=factors[key]*2
+    # print('multiplied')
     if n%2==0:
         index = 0
-        r = int(n/2+1)
+        r = int(n/2)
         while(primes[index]<=n):
             # t1 = Legende(n,primes[index])
             # t2 = Legende(r,primes[index])
@@ -724,14 +736,85 @@ def V11(n):
             # tSum = t1-t2-t3
             tSum=lucas_binom(n,r,primes[index])
             if(tSum==0):
+                # print("One factor is : " + str(primes[index]))
                 if(primes[index] not in factors):
                     factors[primes[index]]=0
-                factors[primes[index]]+=fact_exp(n,primes[index])
+                t1 = fact_exp(n,primes[index])
+                t2 = fact_exp(r,primes[index])
+                t3 = fact_exp(n-r,primes[index])
+                factors[primes[index]] += (t1-t2-t3)
+                # factors[primes[index]]+=1
             index+=1
     end = time.time()
     # print("Factors: " + str(end-start))
     # print("found all factors")
     # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+spf=[0,1]
+
+def seive(n):
+    global spf
+    spf+=[0]*n
+    #set each number to itself
+    for i in range(n):
+        spf[i]=i
+    # starting at 2, see if the number is prime/hasn't been changed
+    # then mark every number that is divisible by that number
+    # this method gets the smallest prime factor of a number.
+    for i in range(2,n):
+        if(i==spf[i]):
+            for j in range(i*i,n,i):
+                if(spf[j]==j):
+                    spf[j]=i
+
+#good idea, too much space
+def V12(n):
+    global spf
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    start = time.time()
+    # find the factors
+    i = 1
+    start = time.time()
+    nextBinomial =1
+    while i <= int((n-1)/2):
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        tmp = nextBinomial
+        while tmp!=1:
+            prime = spf[tmp]
+            if(not prime in factors):
+                factors[prime]=0
+            factors[prime]+=1
+            tmp=tmp//prime
+        i+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        tmp = nextBinomial
+        while tmp!=1:
+            prime = spf[tmp]
+            if(not prime in factors):
+                factors[prime]=0
+            factors[prime]+=1
+            tmp=tmp//prime
+    end = time.time()
     sum = 1
     keys = list(factors.keys())
     start = time.time()
@@ -753,6 +836,7 @@ def main():
     # V6: 0.2798879146575928
     # V7: 32.21831011772156
     # V7(improved): 29.772693395614624
+    # seive(50000000)
     input("Continue?")
     start = time.time()
     sum = 0
