@@ -409,10 +409,10 @@ def V8(n):
     nextBinomial = 1
     i = 1
     start = time.time()
+    #do first half of binomialProducts
     while i <= int((n-1)/2):
-        # print(i+1)
+        #find next binomial from past binomial
         nextBinomial = nextBinomial * (n-i+1) // (i)
-        # print(nextBinomial)
         temp = nextBinomial
         l = 0
         while(temp > 1):
@@ -423,12 +423,18 @@ def V8(n):
                 temp=temp//primes[l]
                 l-=1
             l+=1
+            #if we've run out of primes, add we still are over 1,
+            # add another prime to the list of primes. Repeat
             if(l==len(primes) and temp > 1):
                 addPrime()
-                # print(primes)
         i+=1
+
+    #binomialProducts repeat from first half, so double
     for key in factors:
         factors[key]=factors[key]*2
+
+    #if n is odd, there will be an odd number of terms.
+    #Thus, we have to make one more pass through
     if n%2==0:
         # print(i+1)
         nextBinomial = nextBinomial * (n-i+1) // (i)
@@ -820,6 +826,81 @@ def V12(n):
     start = time.time()
     for key in keys:
         tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        if tmpSum == 0:
+            return 0
+        sum*=tmpSum
+        sum=sum%1000000007
+    # print(sum)
+    end = time.time()
+    # print("Sum: " + str(end-start))
+    return sum
+
+#Fermat's algorith
+#any n = a*a-b*b , where n is odd
+# shuffled, it's b*b = a*a-n
+def fermat(n):
+    a = int(1+math.sqrt(n))
+    BB = n-a*a
+    while(int(math.sqrt(BB)) != math.sqrt(BB))
+
+def V13(n):
+    global primes
+    n=int(n)
+    if(n<2):
+        return 1
+    factors = {}
+    nextBinomial = 1
+    i = 1
+    start = time.time()
+    while i <= int((n-1)/2):
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        l = 0
+        while(temp > 1):
+            if temp%primes[l]==0:
+                if not primes[l] in factors:
+                    factors[primes[l]] = 0
+                factors[primes[l]]+=1
+                temp=temp//primes[l]
+                l-=1
+            l+=1
+            if(l==len(primes) and temp > 1):
+                addPrime()
+                # print(primes)
+        i+=1
+    for key in factors:
+        factors[key]=factors[key]*2
+    if n%2==0:
+        # print(i+1)
+        nextBinomial = nextBinomial * (n-i+1) // (i)
+        # print(nextBinomial)
+        temp = nextBinomial
+        l = 0
+        while(temp > 1):
+            if temp%primes[l]==0:
+                if not primes[l] in factors:
+                    factors[primes[l]] = 0
+                factors[primes[l]]+=1
+                temp=temp//primes[l]
+                l-=1
+            l+=1
+            if(l==len(primes) and temp > 1):
+                addPrime()
+                # print(primes)
+    end = time.time()
+    # print("Factors: " + str(end-start))
+    # print("found all factors")
+    # print(factors)
+    sum = 1
+    keys = list(factors.keys())
+    start = time.time()
+    for key in keys:
+        tmpSum = ((key**(1+factors[key])-1)//(key-1))%1000000007
+        # for exp in range(1,factors[key]+1):
+        #     tmpSum += key**exp
+        #     tmpSum=tmpSum%1000000007
         if tmpSum == 0:
             return 0
         sum*=tmpSum

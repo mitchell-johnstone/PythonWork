@@ -10,6 +10,8 @@ def PrimesToN(n):
     while (primes[len(primes)-1]<n):
         addPrime()
         # print(primes[len(primes)-1])
+    primes.remove(primes[len(primes)-1])
+
 
 def addPrime():
     global primes
@@ -40,8 +42,7 @@ def main():
         prime = int(shufflePrime) in primes
         while(shufflePrime != str(possibleCircularPrime) and prime):
             shufflePrime = shufflePrime[len(shufflePrime)-1] + shufflePrime[0:len(shufflePrime)-1]
-            if(shufflePrime in primes):
-                prime = False
+            prime = int(shufflePrime) in primes
         if(prime):
             countOfPrimes+=1
             # print(possibleCircularPrime)
