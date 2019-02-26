@@ -841,7 +841,8 @@ def V12(n):
 def fermat(n):
     a = int(1+math.sqrt(n))
     BB = n-a*a
-    while(int(math.sqrt(BB)) != math.sqrt(BB))
+    while(int(math.sqrt(BB)) != math.sqrt(BB)):
+        return a
 
 def V13(n):
     global primes
@@ -911,8 +912,18 @@ def V13(n):
     return sum
 
 def main():
+    sum = 0
+    current = 0
+    x = int(input("How high?"))
+    f = open("C:/Users/Admin/Documents/Coding/Python/PE/P650Nums.txt", "r")
+    work_data = f.readlines()
+    while current<x and current<len(work_data):
+        sum=int(work_data[current])
+        # print(work_data[current])
+        current+=1
+    # current+=1
     PrimesTo20000()
-    x = input("How high?")
+    f = open("C:/Users/Admin/Documents/Coding/Python/PE/P650Nums.txt", "a")
     # print(int(V7(x)))
     # V6: 0.2798879146575928
     # V7: 32.21831011772156
@@ -920,12 +931,12 @@ def main():
     # seive(50000000)
     input("Continue?")
     start = time.time()
-    sum = 0
-    for i in range(1,1+int(x)):
+    for i in range(current+1,int(x)+1):
         print(i)
-        t = int(V11(i))%1000000007
+        t = int(V8(i))%1000000007
         sum+=t
         sum=sum%1000000007
+        f.write(str(sum)+ "\n")
         # print(t)
     print()
     print(sum)
