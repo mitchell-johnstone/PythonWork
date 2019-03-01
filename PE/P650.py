@@ -842,7 +842,8 @@ def fermat(n):
     a = int(1+math.sqrt(n))
     BB = n-a*a
     while(int(math.sqrt(BB)) != math.sqrt(BB)):
-        return a
+        a+=1
+    return a
 
 def V13(n):
     global primes
@@ -911,6 +912,15 @@ def V13(n):
     # print("Sum: " + str(end-start))
     return sum
 
+def addPrimesInFile():
+    global primes
+    f = open("C:/Users/Admin/Documents/Coding/Python/PE/Primes.txt", "r")
+    # work_data = f.readlines
+    for line in f:
+        words = line.split();
+        for word in words:
+            primes+=[int(word)]
+
 def main():
     sum = 0
     current = 0
@@ -922,7 +932,8 @@ def main():
         # print(work_data[current])
         current+=1
     # current+=1
-    PrimesTo20000()
+    # PrimesTo20000()
+    addPrimesInFile()
     f = open("C:/Users/Admin/Documents/Coding/Python/PE/P650Nums.txt", "a")
     # print(int(V7(x)))
     # V6: 0.2798879146575928
