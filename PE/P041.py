@@ -4,7 +4,10 @@
 #
 # What is the largest n-digit pandigital prime that exists?
 
+import math
+
 primes = [2,3]
+
 def addPrime():
     global primes
     l = len(primes)
@@ -12,7 +15,7 @@ def addPrime():
     while l == len(primes):
         prime = True
         i = 0
-        while (i < l and prime):
+        while (primes[i] < math.sqrt(current)+1 and prime):
             p=primes[i]
             if current%p==0:
                 prime=False
@@ -24,38 +27,6 @@ def addPrime():
         else:
             current+=2
 
-# pandigital in reverse order
-def nextPandigitalV2(n):
-    #set n to str
-    n = (str(n))
-
-    #find first occurence that an index is lower than the one to the left of it
-    firstNum = len(n)-1
-    while(firstNum>=0):
-        firstNum-=1
-        if(n[firstNum] > n[firstNum+1]):
-            break
-
-    #find num directly below n[firstNum]
-    secondNum = firstNum+1
-    t = secondNum
-    while(t<len(n)):
-      # print("checking for 2nd")
-      if(n[t] < n[firstNum] and n[t]>n[secondNum]):
-        secondNum = t
-      t+=1
-
-    #switch first and second
-    n = n[:firstNum] + n[secondNum] + n[firstNum+1:secondNum] + n[firstNum] + n[secondNum+1:]
-
-    #reset the rest of the string to go in descending order
-    for i in range(firstNum+1,len(n)-1):
-        # print("Reversing")
-        for j in range(i+1,len(n)):
-            if n[i]<n[j]:
-                n = n[:i] + n[j] + n[i+1:j] + n[i] + n[j+1:]
-
-    return int(n)
 
 def isPandigital(n):
     n = str(n)

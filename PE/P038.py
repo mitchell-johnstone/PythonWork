@@ -31,7 +31,7 @@ def nextPandigital(n):
     return n
 
 #anti-lexigraphic ordering :)
-def nextPandigitalV2(n):
+def antiPandigitalV2(n):
     #set n to str
     n = (str(n))
 
@@ -100,7 +100,7 @@ def main():
 
     #loop unit we get a concatenated string
     while(not isConcatenated(currentNum)):
-        currentNum = nextPandigitalV2(currentNum)
+        currentNum = antiPandigitalV2(currentNum)
         print(currentNum)
     #print result
     print(currentNum)

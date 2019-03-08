@@ -389,7 +389,7 @@ def addPrime():
     while l == len(primes):
         prime = True
         i = 0
-        while (i < l and prime):
+        while (primes[i] < math.sqrt(current)+1 and prime):
             p=primes[i]
             if current%p==0:
                 prime=False
