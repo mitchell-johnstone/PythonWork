@@ -396,6 +396,8 @@ def addPrime():
             i+=1
         if(prime):
             primes += [current]
+            p = open("C:/Users/Admin/Documents/Coding/Python/PE/Primes.txt", "a")
+            p.write(str(current) + "\n")
         else:
             current+=2
 
