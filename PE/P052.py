@@ -13,20 +13,25 @@ def delIndexFromString(s,i):
 def compareNumbers(n1,n2):
     if(not len(n1) == len(n2)):
         return False
-    kIndex1 = 0
-    while(kIndex1<len(n1)):
-        kIndex2 = 0
-        found = False
-        while(kIndex2<len(n2) and not found):
-            if(n1[kIndex1] == n2[kIndex2]):
-                found = True
-                delIndexFromString(n1,kIndex1)
-                delIndexFromString(n2,kIndex2)
-            kIndex2+=1
-        kIndex1+=1
-        if(not found):
-            return False
-    return True
+    # kIndex1 = 0
+    # while(kIndex1<len(n1)):
+    #     kIndex2 = 0
+    #     found = False
+    #     while(kIndex2<len(n2) and not found):
+    #         if(n1[kIndex1] == n2[kIndex2]):
+    #             found = True
+    #             delIndexFromString(n1,kIndex1)
+    #             delIndexFromString(n2,kIndex2)
+    #         kIndex2+=1
+    #     kIndex1+=1
+    #     if(not found):
+    #         return False
+    # return True
+
+    #updated method for checking, much easier
+    n1 = sorted(n1)
+    n2 = sorted(n2)
+    return n1 == n2
 
 def main():
     kInt = 1
