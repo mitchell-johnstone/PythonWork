@@ -32,21 +32,6 @@ def bruteForce():
     print(max)
 
 
-# def smallest_factors(n):
-#     # set each number to itself
-#     spf = [i for i in range(n)]
-#
-#     # starting at 2, see if the number is prime/hasn't been changed
-#     # then mark every number that is divisible by that number
-#     # this method gets the smallest prime factor of a number.
-#     for i in range(2, len(spf)):
-#         if i == spf[i]:
-#             for j in range(i * i, len(spf), i):
-#                 if spf[j] == j:
-#                     spf[j] = i
-#     return spf
-
-
 spf = smallest_factors(1000001)
 print(spf)
 
@@ -69,7 +54,7 @@ def phi(n):
 
 
 def v1():
-    vals = [n / phi(n) for n in range(2, 100000001)]
+    vals = [n / phi(n) for n in range(2, 1000001)]
     return vals.index(max(vals)) + 2
 
 
@@ -85,16 +70,16 @@ def v2():
 
 @timer
 def main():
-    print(phi(2))
-    print(phi(3))
-    print(phi(4))
-    print(phi(5))
-    print(phi(6))
-    print(phi(7))
-    print(phi(8))
-    print(phi(9))
-    print(phi(10))
-    print(v2())
+    # print(phi(2))
+    # print(phi(3))
+    # print(phi(4))
+    # print(phi(5))
+    # print(phi(6))
+    # print(phi(7))
+    # print(phi(8))
+    # print(phi(9))
+    # print(phi(10))
+    print(v1())
 
 
 if __name__ == '__main__':
