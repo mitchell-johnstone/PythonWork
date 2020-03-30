@@ -43,7 +43,6 @@ def list_to_string(list_of_nums):
     return "".join([str(i) for i in list_of_nums])
 
 
-
 @timer
 def main():
     # Get all permutations of list
