@@ -15,7 +15,7 @@ def maxNum(den, targetN, targetD):
 
 
 def minNum(den, targetN, targetD):
-    return math.ceil((den*targetN - 1) / targetD)
+    return math.ceil((den*targetN + 1) / targetD)
 
 
 def v1():
