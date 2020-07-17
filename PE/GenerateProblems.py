@@ -33,7 +33,7 @@ def getProblemInfo(n):
             elif not inTag:
                 newLine += char
         if newLine!="# ":
-            while len(newLine) > 50:
+            while len(newLine) > 100:
                 i = newLine.find(" ",45)
                 newText += [newLine[:i]]
                 newLine = "# " + newLine[i+1:]
