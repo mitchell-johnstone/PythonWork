@@ -16,9 +16,10 @@ def v1():
         count += 1
     print(count)
 
-Pn = [1] + [0] * 100
+Pn = [1]
 def calcP(n):
     n = int(n)
+    print(Pn)
     if n < 0: return 0
     if Pn[n] > 0: return Pn[n]
     P = 0
@@ -29,15 +30,17 @@ def calcP(n):
         Pn2 = calcP(n2)
         if k%2 ==1: P += (Pn1 + Pn2)
         else: P-=(Pn1+Pn2)
+    while len(Pn) <= n:
+        Pn += [0]
     Pn[n] = P
     return P
 
-def improvement():
-    print(sum([calcP(i) for i in range(1,101)]))
+def improvement(n):
+    print(sum([calcP(i) for i in range(1,n+1)]))
 
 def main():
-    v1()
-    improvement()
+    #v1()
+    improvement(100)
 
 if __name__ == "__main__":
     main()
