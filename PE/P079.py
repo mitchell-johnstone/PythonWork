@@ -11,8 +11,33 @@ import numpy as np
 import math
 
 
+def getListOfLogins():
+    f = open("p079_keylog.txt")
+    yield (str(n) for n in f.readlines())
+
+
+def fit(numberToFit, passcode):
+    tempCodes = []
+    firstChar = numberToFit[0]
+    for p in passcode:
+        for i in range(len(p)):
+            if p[i] == firstChar:
+                tempcodes += p[:i] + numberToFit + p[i+1:]
+                for end in fit(numberToFit[1:],p[i+1:]):
+                    tempcodes += p[:i] + end
+    return tempcodes
+
+
 def v1():
-    print()
+    passcode = []
+    for n in getListOfLogins():
+        print(n)
+        continue
+        if not passcode: passcode = [n]
+        else:
+            tempcodes = []
+            for p in passcode:
+                tempcodes += fit(n,p)
 
 
 @timer
